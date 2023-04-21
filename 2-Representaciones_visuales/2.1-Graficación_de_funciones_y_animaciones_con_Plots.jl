@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.19.19
+# v0.19.22
 
 using Markdown
 using InteractiveUtils
@@ -101,7 +101,7 @@ md"  "
 
 # ╔═╡ d2472d6a-7072-49ae-ba55-207db17be3ca
 begin
-    l = 2          # ¡Cambia el valor de l y corre la celda,
+    l = 1          # ¡Cambia el valor de l y corre la celda,
     plot(sin,0:l:2π) # y observa qué sucede con la gráfica!
 end
 
@@ -172,7 +172,7 @@ md"De hecho, agregarle un atributo `marker = true` a una gráfica tipo `plot` no
 
 # ╔═╡ fc94b6e8-cae9-46bc-9ac4-9cee5e86c8ee
 begin
-	plot(sin,0:0.25:2π, title = "plot y scatter", xlabel = "x", ylabel = "sin(x)", color = "darkorange", label = "plot", marker = true)
+	plot(sin,0:0.25:2π, title = "plot y scatter", xlabel = "x", ylabel = "sin(x)", color = "darkorange", label = "plot", marker = true, legend = false)
 end
 
 # ╔═╡ 77a60b5d-ad7f-4c44-a68d-694417619668
@@ -182,6 +182,15 @@ md"por lo que no es necesario llamar dos funciones cuando querramos hacer esto. 
 md""" **Ejercicio** Define un parámetro interactivo `d` que controle el nivel de detalle de una gráfica tipo `plot` de las funciones `sin` y `cos` en el intervalo $[-\pi,\pi]$, con el título "Funciones trigonométricas", donde cada función se grafique con un color diferente y la leyenda indique el nombre de cada función.
 
 """
+
+# ╔═╡ f6da0970-e197-4a28-888c-490bf5179a59
+@bind d Slider(0.05:0.05:2, default=0.5)
+
+# ╔═╡ 0c334a14-2620-45e6-a7c1-66b6d5673fdf
+begin
+	plot(sin,-π:d:π, title = "Funciones trigonométricas", xlabel = "x", ylabel = "f(x)", color = "darkorange", label = L"\sin(x)")
+	plot!(cos,-π:d:π, color = "magenta", label = L"\cos(x)")
+end
 
 # ╔═╡ acfe0334-c7aa-471f-b39e-8276e2e3dd42
 md"""#### El paquete `LaTeXStrings`
@@ -360,9 +369,6 @@ Por ejemplo:
 
 """
 
-# ╔═╡ 56c967bd-feb0-4266-8209-3c97379152b1
-surface(R,R,h, color = :gist_rainbow)
-
 # ╔═╡ 8eefdb22-91ad-494b-979a-d3b2a17f706e
 md"Para representar esta superficie como una _malla_ creada a partir de los puntos de la forma `[x[i],y[i]]` en los que se evalúa la función `h`, podemos usar la función `wireframe` con la misma sintáxis que `surface`:"
 
@@ -476,21 +482,111 @@ md"""**Ejercicio** Haz un código donde definas cuatro variables `h`, `r`, `θ` 
 
 Sugerencia: Repasa las ecuaciones cinemáticaticas del tiro parabólico e investiga los atributos `xaxis` y `yaxis` para poder fijar los ejes de la gráfica durante la animación."""
 
-# ╔═╡ 50f7f46b-081e-4b07-94af-1331b33a7c7f
-# Tu código (comentado) va aquí :D
+# ╔═╡ d636973c-46bd-4654-ab6d-96d922ab787d
+begin
+	# Definimos las variables
+	ha = 10 # altura inicial
+	r = 25 # rapidez
+	θi = π/4 # ángulo de lanzamiento
+	t = 0 # tiempo inicial
+	posiciones = [] #para poder marcar la trayectoria, queremos un arreglo que guarde todas las posiciones en los ejes en los que la partícula ha estado, lo definimos vacío en un inicio e iremos añadiendo las nuevas posiciones dentro del for.
+
+	#Retomamos las ecuaciones de movimiento del tiro parabólico por componentes como funciones de t (que es el que variará en el ciclo)
+	x(t) = r*cos(θi)*t
+	y(t) = ha + r*sin(θi)*t - 0.5*9.81*t^2
+	
+	# Empezamos la animación
+	animacion = @animate for i=0:0.1:5
+	    t = i
+	    x_actual = x(t) 
+	    y_actual = y(t)
+		push!(posiciones, (x_actual,y_actual)) #push irá añadiendo al final de nuestro arreglo, los nuevos pares de posición en cada iteración.
+	    # La partícula
+	    scatter([x_actual], [y_actual], marker=:circle, legend=false)
+		# Su trayectoria, quitamos el marker para que sólo marque la trayectoria uniendo los puntos que se introdujeron en el arreglo posiciones.
+		plot!([posiciones...], marker=:none, linestyle=:dash, color=:blue, legend=false)
+	    xlims!(0, 100)
+	    ylims!(0, 50)
+	    # Terminamos la animación si la partícula toca el suelo
+	    if y_actual <= 0
+	        break
+	    end
+	end
+	
+	# Mostramos la animación
+	gif(animacion, "mi_tiro_parabolico.gif")
+end
 
 # ╔═╡ 59ec3890-303c-436a-8043-8e6bc9c427ed
 md"**Ejercicio** Crea una función que tome parámetros `h`, `r`, `θ` y `t`, y haga lo descrito en el Ejercicio anterior."
 
 # ╔═╡ c3264b4d-81b1-4e0c-9205-ff818665788c
-# Tu código (comentado) va aquí :D
+function mi_tiro_parabolico(ha, r, θi)
+    t = 0
+    posiciones = []
+    
+    x(t) = r*cos(θi)*t
+    y(t) = ha + r*sin(θi)*t - 0.5*9.81*t^2
+    
+    animacion = @animate for i=0:0.1:5
+        t = i
+        x_actual = x(t) 
+        y_actual = y(t)
+        push!(posiciones, (x_actual, y_actual))
+        scatter([x_actual], [y_actual], marker=:circle, legend=false)
+        plot!([posiciones...], marker=:none, linestyle=:dash, color=:blue, legend=false)
+        xlims!(0, 100)
+        ylims!(0, 50)
+        if y_actual <= 0
+            break
+        end
+    end
+
+    return gif(animacion, "mi_tiro_parabolico.gif")
+end
+
+# ╔═╡ 72c3cd9b-ce24-4ef7-91c1-30c52cca9553
+mi_tiro_parabolico(20, 25,π/3 )
 
 # ╔═╡ 77aacd79-26e3-40c2-ac22-f9121aac4155
 md"""**Ejercicio** Crea una animación de cómo la superficie obtenida de la función $h(x,y) = \cos(x) + \sin(y)$ se desplaza hacia el eje Y.
 """
 
-# ╔═╡ 4e68ad0c-17ef-41f7-b9fe-8561415bb7f2
-# Tu código (comentado) va aquí :D
+# ╔═╡ 9d0c097c-1b9b-4031-a718-da3adf353328
+begin
+	hi(x,y) = cos(x) + sin(y)
+	Ra = 0:0.05:2π
+end
+
+# ╔═╡ bb9d08dc-b289-4189-9d4a-b67571aeb8a7
+function surface(rangea)
+	surface(R,rangea,h, color = :gist_rainbow)
+end
+	
+
+# ╔═╡ 56c967bd-feb0-4266-8209-3c97379152b1
+surface(R,R,h, color = :gist_rainbow)
+
+# ╔═╡ e11b8e27-3900-4143-9789-1613b482bf52
+begin
+	anima = @animate for y in 0:0.05:2π
+	    surface(Ra, Ra, (x, y),hi(x, y),
+	        color=:gist_rainbow, xlims=(0, 2π), ylims=(0, 2π), zlims=(-2, 2),
+	        xlabel="x", ylabel="y", zlabel="z")
+	    end
+	gif(anima, "movimientosurf_y.gif", fps = 30)
+end
+
+# ╔═╡ 4cdf400d-0935-4aae-8f22-44344322d594
+begin
+	
+	@gif for t in 0:0.1:2π # para t en 0:0.1:2π
+	plot(surface.( range(0,2π, step = 0.1)),
+		 legend = false)
+    
+		
+	end
+end
 
 # ╔═╡ 88299b4d-2a7d-4c18-956e-c6e75473c658
 md" ## Recursos complementarios
@@ -520,7 +616,7 @@ PlutoUI = "~0.7.38"
 PLUTO_MANIFEST_TOML_CONTENTS = """
 # This file is machine-generated - editing it directly is not advised
 
-julia_version = "1.8.4"
+julia_version = "1.8.5"
 manifest_format = "2.0"
 project_hash = "77e2734aeac55d5109eeed492b1ea958eae44caf"
 
@@ -1475,6 +1571,8 @@ version = "0.9.1+5"
 # ╠═fc94b6e8-cae9-46bc-9ac4-9cee5e86c8ee
 # ╟─77a60b5d-ad7f-4c44-a68d-694417619668
 # ╟─8b8aff3c-3d88-4022-bc86-b75ebefde2a3
+# ╠═f6da0970-e197-4a28-888c-490bf5179a59
+# ╠═0c334a14-2620-45e6-a7c1-66b6d5673fdf
 # ╟─acfe0334-c7aa-471f-b39e-8276e2e3dd42
 # ╠═8302701b-02ac-4d35-b7de-5dec8fe701fb
 # ╟─02f9778e-21c8-42db-bed6-95a20d592f22
@@ -1511,11 +1609,15 @@ version = "0.9.1+5"
 # ╠═765a0e10-4217-4a50-8fb1-e46bee83aaa6
 # ╟─abbce622-7912-40ee-8632-261b5129dcb4
 # ╟─7577805b-1d52-47e4-aa45-2652943db1cf
-# ╠═50f7f46b-081e-4b07-94af-1331b33a7c7f
+# ╠═d636973c-46bd-4654-ab6d-96d922ab787d
 # ╟─59ec3890-303c-436a-8043-8e6bc9c427ed
 # ╠═c3264b4d-81b1-4e0c-9205-ff818665788c
+# ╠═72c3cd9b-ce24-4ef7-91c1-30c52cca9553
 # ╟─77aacd79-26e3-40c2-ac22-f9121aac4155
-# ╠═4e68ad0c-17ef-41f7-b9fe-8561415bb7f2
+# ╠═9d0c097c-1b9b-4031-a718-da3adf353328
+# ╠═e11b8e27-3900-4143-9789-1613b482bf52
+# ╠═bb9d08dc-b289-4189-9d4a-b67571aeb8a7
+# ╠═4cdf400d-0935-4aae-8f22-44344322d594
 # ╟─88299b4d-2a7d-4c18-956e-c6e75473c658
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
