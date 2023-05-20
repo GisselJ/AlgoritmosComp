@@ -1,7 +1,6 @@
 {
  "cells": [
   {
-   "attachments": {},
    "cell_type": "markdown",
    "id": "95b518e4",
    "metadata": {},
@@ -14,7 +13,6 @@
    ]
   },
   {
-   "attachments": {},
    "cell_type": "markdown",
    "id": "bef591a1",
    "metadata": {},
@@ -66,7 +64,6 @@
    ]
   },
   {
-   "attachments": {},
    "cell_type": "markdown",
    "id": "507ffad4",
    "metadata": {},
@@ -95,24 +92,14 @@
    ]
   },
   {
-   "attachments": {},
    "cell_type": "markdown",
    "id": "27b76adf",
    "metadata": {},
    "source": [
-    "$a'_{n-1,n-1}x_{n-1} + a'_{n-1,n}x_n = b'_{n-1}$ despejar para $x_{n-1}$\n",
-    "\n",
-    "$a'_{n-1,n-1}x_{n-1} = b'_{n-1} - a'_{n-1,n}x_n$\n",
-    "\n",
-    "$x_{n-1} = \\frac{b'_{n-1}}{a'_{n-1,n-1}} - \\frac{a'_{n-1,n}x_n}{a'_{n-1,n-1}}$\n",
-    "\n",
-    "Sustiyo en valor de $X_n$\n",
-    "\n",
-    "$ x_{n-1} =  \\frac{b'_{n-1}}{a'_{n-1,n-1}}  - \\frac{a'_{n-1,n}x_n}{a'_{n-1,n-1}} \\frac{b'_n}{a'_{nn}}$"
+    "_Escribe tu procedimiento aquí._"
    ]
   },
   {
-   "attachments": {},
    "cell_type": "markdown",
    "id": "2d2a55c4",
    "metadata": {},
@@ -123,14 +110,14 @@
    ]
   },
   {
-   "attachments": {},
    "cell_type": "markdown",
    "id": "07ebfddf",
    "metadata": {},
-   "source": []
+   "source": [
+    "_Escribe tu respuesta aquí._"
+   ]
   },
   {
-   "attachments": {},
    "cell_type": "markdown",
    "id": "a0407b0e",
    "metadata": {},
@@ -139,7 +126,6 @@
    ]
   },
   {
-   "attachments": {},
    "cell_type": "markdown",
    "id": "70c87c91",
    "metadata": {},
@@ -220,7 +206,6 @@
    ]
   },
   {
-   "attachments": {},
    "cell_type": "markdown",
    "id": "0cf2ebb0",
    "metadata": {},
@@ -258,7 +243,6 @@
    ]
   },
   {
-   "attachments": {},
    "cell_type": "markdown",
    "id": "139f4699",
    "metadata": {},
@@ -287,7 +271,6 @@
    ]
   },
   {
-   "attachments": {},
    "cell_type": "markdown",
    "id": "dc0c2af6",
    "metadata": {},
@@ -310,7 +293,6 @@
    ]
   },
   {
-   "attachments": {},
    "cell_type": "markdown",
    "id": "cb419e2e",
    "metadata": {},
@@ -335,7 +317,6 @@
    ]
   },
   {
-   "attachments": {},
    "cell_type": "markdown",
    "id": "725fb2a7",
    "metadata": {},
@@ -354,7 +335,6 @@
    ]
   },
   {
-   "attachments": {},
    "cell_type": "markdown",
    "id": "462f6ff3",
    "metadata": {},
@@ -391,7 +371,6 @@
    ]
   },
   {
-   "attachments": {},
    "cell_type": "markdown",
    "id": "70597fba",
    "metadata": {},
@@ -424,7 +403,6 @@
    ]
   },
   {
-   "attachments": {},
    "cell_type": "markdown",
    "id": "9864317a",
    "metadata": {},
