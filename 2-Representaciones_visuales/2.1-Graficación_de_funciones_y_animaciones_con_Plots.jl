@@ -588,6 +588,58 @@ begin
 	end
 end
 
+# ╔═╡ 1b8eee97-6c51-4691-bc84-dec17283fe39
+function Torres_Hanoi(n)
+	#queremos obtener una lista de pares que indiquen, en la primera entrada, el número de disco, y en la segunda entrada, a qué torre se moverá. Por ello definimos un arreglo vacío al que le iremos agregando los pares.
+	pasos = [] #arreglo vacío
+
+	#Definimos la función de movimiento
+	function movimiento(tamaño, origen, destino, intermedio, pasos) #tamaño: tamaño de la torre, origen: dónde se encuentra la torre a mover, destino: a dónde queremos moverla, intermedio: torre de apoyo para lograr el movimiento, pasos: arreglo de movimientos
+		if tamaño == 1 #definimos el caso base
+			push!(pasos, (origen, destino)) #agregamos al arreglo pasos el par (origen, destino), aquí no vale la pena usar la funcion movimiento, sólo mostramos el resultado.
+		else 
+			movimiento(tamaño-1, 1, 2, 3, pasos) #Para torres de +1 disco, pasamos la torre de tamaño n-1 con destino a la torre intermedia (2).
+			push!(pasos, (origen, destino)) #agregar movimiento del disco más grande a la torre final (3)
+			movimiento(tamaño-1, 2, 3, 1, pasos ) #pasamos la torre de tamaño n-1 a la torre final.
+		end
+	end
+
+	movimiento(n,1,3,2, pasos) #en la función de torres_Hanoi, la "enlazamos" con la función movimiento y definimos de dónde a donde va el movimiento, (secuencia 1.3.2 según los argumentos que recibe movimiento)
+end
+
+# ╔═╡ d6517919-e55a-4e1a-ae14-bb54cd5070e4
+Torres_Hanoi(3)
+
+# ╔═╡ 055948a5-a1c4-4de3-972b-1437701ac520
+Torres_Hanoi(2)
+
+# ╔═╡ d7b1bffa-c34f-4f23-a492-c3e5d2321a49
+function circulo(r)
+    θ = LinRange(0, 2π, 100)
+    r * sin.(θ), r * cos.(θ)
+end
+
+# ╔═╡ e1002884-73cf-481b-a04a-3cb352ad0740
+function approx_pi(num_points)
+    inside_circle = 0
+    for i in 1:num_points
+        x, y = rand() .- 0.5, rand() .- 0.5
+        if x^2 + y^2 <= 0.25
+            inside_circle += 1
+            scatter!([x], [y], color = :red, marker = :dot)
+        else
+            scatter!([x], [y], color = :blue, marker = :dot)
+        end
+    end
+    ratio = inside_circle / num_points
+    return ratio * 4
+	
+end
+
+
+# ╔═╡ 2f20e4c3-9cfe-41fd-9c39-d93d91a846c4
+approx_pi(1000)
+
 # ╔═╡ 88299b4d-2a7d-4c18-956e-c6e75473c658
 md" ## Recursos complementarios
 
@@ -1618,6 +1670,12 @@ version = "0.9.1+5"
 # ╠═e11b8e27-3900-4143-9789-1613b482bf52
 # ╠═bb9d08dc-b289-4189-9d4a-b67571aeb8a7
 # ╠═4cdf400d-0935-4aae-8f22-44344322d594
+# ╠═1b8eee97-6c51-4691-bc84-dec17283fe39
+# ╠═d6517919-e55a-4e1a-ae14-bb54cd5070e4
+# ╠═055948a5-a1c4-4de3-972b-1437701ac520
+# ╠═d7b1bffa-c34f-4f23-a492-c3e5d2321a49
+# ╠═e1002884-73cf-481b-a04a-3cb352ad0740
+# ╠═2f20e4c3-9cfe-41fd-9c39-d93d91a846c4
 # ╟─88299b4d-2a7d-4c18-956e-c6e75473c658
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
